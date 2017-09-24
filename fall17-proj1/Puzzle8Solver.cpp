@@ -11,7 +11,7 @@ void WeightedAStar(std::string puzzle, double w, int & cost, int & expansions) {
 	// TODO
     Puzzle8StateManager myMannager;
     Puzzle8PQ openList;
-    std::vector<std::pair<Puzzle8State, int>> myStates; //record the states
+    std::vector<std::pair<Puzzle8State, int>> myStates; //record the states int is gval
     
     Puzzle8State currState(puzzle);	// Create a state from its string representation.
     myStates.push_back(std::make_pair(currState, 0));
@@ -41,7 +41,7 @@ void WeightedAStar(std::string puzzle, double w, int & cost, int & expansions) {
                 myMannager.GenerateState(mySuccessor);
                 int gVal = myStates[currElement.id].second + 1;
                 myStates.push_back(std::make_pair(mySuccessor, gVal));
-                int f = GetF(gVal, mySuccessor.GetHeuristic(), w);
+                double f = GetF(gVal, mySuccessor.GetHeuristic(), w);
                 PQElement successorElement(myMannager.GetStateId(mySuccessor), f);
                 openList.push(successorElement);
             }
@@ -53,14 +53,12 @@ void WeightedAStar(std::string puzzle, double w, int & cost, int & expansions) {
                 {
                     continue;
                 }
-                else if (myStates[id].first.GetOpened())  //if the successor is not closed and has its id, it must be in the open list
+                if (myStates[id].first.GetOpened())  //if the successor is not closed and has its id, it must be in the open list
                 {
-                    int currF = GetF(gVal, mySuccessor.GetHeuristic(), w);
-                    int preF = myStates[id].second;
-                    if(currF < preF)
+                    double currF = GetF(gVal, mySuccessor.GetHeuristic(), w);
+                    if(gVal < myStates[id].second)
                     {
-                        
-                        myStates[id].second = currF;
+                        myStates[id].second = gVal;
                         PQElement successorElement(id, currF);
                         openList.push(successorElement);
                     }
