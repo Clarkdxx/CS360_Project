@@ -19,7 +19,6 @@ public:
 			for (int c = 0; c < 3; c++)
 				tiles[r][c] = s[r*3 + c];
         closed = false;
-        opened = false;
 	}
 
 	// Key generated as an integer for the hash function in Puzzle8StateManager.
@@ -60,17 +59,7 @@ public:
     {
         return closed;
     }
-    
-    void SetOpened()
-    {
-        opened = true;
-    }
-    
-    bool GetOpened()
-    {
-        return opened;
-    }
-    
+
     //calculate heuristic distance
     int GetHeuristic()
     {

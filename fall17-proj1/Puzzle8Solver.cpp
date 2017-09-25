@@ -28,24 +28,18 @@ void WeightedAStar(std::string puzzle, double w, int & cost, int & expansions) {
         {
             continue;
         }
+        expansions++;
         if(IsGoal(currState.GetLinearizedForm()))
         {
+            cost = myStates[currElement.id].second;
             return;
         }
         myStates[currElement.id].first.SetClosed();   //add to closed list
-        expansions++;
         std::vector<Puzzle8State> currSuccessors = currState.GetSuccessors();
         for (Puzzle8State mySuccessor : currSuccessors)
         {
-            if(IsGoal(mySuccessor.GetLinearizedForm()))
-            {
-                //we found the solution
-                cost = myStates[currElement.id].second + 1;
-                return;
-            }
             if(!myMannager.IsGenerated(mySuccessor))  //if the successor did not go to openlist once
             {
-                mySuccessor.SetOpened();
                 myMannager.GenerateState(mySuccessor);
                 int gVal = myStates[currElement.id].second + 1;
                 myStates.push_back(std::make_pair(mySuccessor, gVal));
@@ -61,16 +55,15 @@ void WeightedAStar(std::string puzzle, double w, int & cost, int & expansions) {
                 {
                     continue;
                 }
-                if (myStates[id].first.GetOpened())  //if the successor is not closed and has its id, it must be in the open list
+                 //if the successor is not closed and has its id, it must be in the open list
+                double currF = GetF(gVal, mySuccessor.GetHeuristic(), w);
+                if(gVal < myStates[id].second)
                 {
-                    double currF = GetF(gVal, mySuccessor.GetHeuristic(), w);
-                    if(gVal < myStates[id].second)
-                    {
-                        myStates[id].second = gVal;
-                        PQElement successorElement(id, currF);
-                        openList.push(successorElement);
-                    }
+                    myStates[id].second = gVal;
+                    PQElement successorElement(id, currF);
+                    openList.push(successorElement);
                 }
+                
             }
         }
     }
