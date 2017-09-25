@@ -23,6 +23,10 @@ void WeightedAStar(std::string puzzle, double w, int & cost, int & expansions) {
     {
         PQElement currElement = openList.top();
         openList.pop(); //remove current from open List
+        if(myStates[currElement.id].first.GetClosed())
+        {
+            continue;
+        }
         myStates[currElement.id].first.SetClosed();   //add to closed list
         expansions++;
         currState = myStates[currElement.id].first;
