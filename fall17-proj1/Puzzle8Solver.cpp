@@ -23,13 +23,17 @@ void WeightedAStar(std::string puzzle, double w, int & cost, int & expansions) {
     {
         PQElement currElement = openList.top();
         openList.pop(); //remove current from open List
-        if(myStates[currElement.id].first.GetClosed())
+        currState = myStates[currElement.id].first;
+        if(currState.GetClosed())
         {
             continue;
         }
+        if(IsGoal(currState.GetLinearizedForm()))
+        {
+            return;
+        }
         myStates[currElement.id].first.SetClosed();   //add to closed list
         expansions++;
-        currState = myStates[currElement.id].first;
         std::vector<Puzzle8State> currSuccessors = currState.GetSuccessors();
         for (Puzzle8State mySuccessor : currSuccessors)
         {

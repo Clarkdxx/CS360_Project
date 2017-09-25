@@ -132,14 +132,12 @@ public:
                 }
             }
         }
-        //std::cout<<idxR<<" "<<idxC<<""<<std::endl;
         int idx0 = idxR * 3 + idxC;
         if(idxR - 1 >= 0)   //we have something above
         {
             int idxSwap = (idxR - 1) * 3 + idxC;
             std::string currState = GetLinearizedForm ();
             std::swap(currState[idx0], currState[idxSwap]);
-            //std::cout<<"Here: "<<idx0<<" "<<idxSwap<<" "<<currState<<std::endl;
             successors.push_back(Puzzle8State(currState));
         }
         if(idxR + 1 <= 2)   //we have something below
